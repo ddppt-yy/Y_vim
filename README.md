@@ -1,4 +1,4 @@
-# Yantc_vim
+# Y_vim
 Vim file(support verilog/system-verilog)
 " history            :  v1.0    创建插件，实现编译，加入注释，文件头等功能 
 "                       v1.1    加入函数Component_Build() 可以实现垂直分割窗口
