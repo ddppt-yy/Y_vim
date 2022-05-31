@@ -34,18 +34,12 @@ colorscheme solarized
 set clipboard+=unnamed
 
 set autochdir
-"fast map
-map <c-s> :w<CR>
-imap <c-s> <Esc>:w<CR>a
-"line nu
+"fast map "dont use this!!!
+"" map <c-s> :w<CR>
+"" imap <c-s> <Esc>:w<CR>a
+
+"line num
 :set nu
-"windows jump
-let g:miniBufExplMapCTabSwitchBufs=1
-let g:miniBufExplMapWindowsNavVim=1
-let g:miniBufExplMapWindowNavArrows=1
-set showtabline=0 "不显示标签栏 
-"set showtabline=1 "这是默认设置，意思是，在创建标签页后才显示标签栏。 
-"set showtabline=2 "总是显示标签栏 
 "
 "=============================================================================
 "        << 判断操作系统是 Windows 还是 Linux 和判断是终端还是 Gvim >>
@@ -165,6 +159,7 @@ endif
 
 
 set cursorline                              "突出显示当前行
+set cursorcolumn                            "突出显示当前行
 set writebackup                             "保存文件前建立备份，保存成功后删除该备份
 set nobackup                                "设置无备份文件
 
@@ -204,45 +199,50 @@ endif
 set nocompatible                                      "禁用 Vi 兼容模式
 filetype off                                          "禁用文件类型侦测
 
+
+
+" Bundle
+"" if g:islinux
+""     set rtp+=~/.vim/bundle/vundle/
+""     call vundle#rc()
+"" else
+""     set rtp+=$VIM/vimfiles/bundle/vundle/
+""     call vundle#rc('$VIM/vimfiles/bundle/')
+"" endif
+"" 
+"" " 使用Vundle来管理插件，这个必须要有。
+"" Bundle 'gmarik/vundle'
+"" " 以下为要安装或更新的插件，不同仓库都有（具体书写规范请参考帮助）
+"" Bundle 'Align'
+"" Bundle 'Yggdroot/indentLine'
+"" Bundle 'Shougo/neocomplcache.vim'
+"" Bundle 'scrooloose/nerdtree'
+"" Bundle 'majutsushi/tagbar'
+"" Bundle 'taglist.vim'
+"" Bundle 'TxtBrowser'
+"" Bundle 'vlog_inst_gen'
+"" Bundle 'nerdcommenter'
+"" Bundle 'luochen1990/rainbow'
+
+
 if g:islinux
-    set rtp+=~/.vim/bundle/vundle/
-    call vundle#rc()
+    set  rtp+=~/.vim/bundle/
+    call plug#begin('~/.vim/plugged')
 else
-    set rtp+=$VIM/vimfiles/bundle/vundle/
-    call vundle#rc('$VIM/vimfiles/bundle/')
+    set  rtp+=$VIM/vimfiles/plugged/
+    call plug#begin('$VIM/vimfiles/plugged/')
 endif
+Plug 'vim-scripts/Align'
+Plug 'Yggdroot/indentLine'
+Plug 'Shougo/neocomplcache.vim'
+Plug 'scrooloose/nerdtree'
+Plug 'majutsushi/tagbar'
+Plug 'yegappan/taglist.vim'
+Plug 'vim-scripts/vlog_inst_gen'
+Plug 'preservim/nerdcommenter'
+Plug 'luochen1990/rainbow'
+call plug#end()
 
-" 使用Vundle来管理插件，这个必须要有。
-Bundle 'gmarik/vundle'
-
-" 以下为要安装或更新的插件，不同仓库都有（具体书写规范请参考帮助）
-"Bundle 'a.vim'
-"Bundle 'Align'
-"Bundle 'jiangmiao/auto-pairs'
-"Bundle 'bufexplorer.zip'
-"Bundle 'ccvext.vim'
-"Bundle 'cSyntaxAfter'
-Bundle 'ctrlpvim/ctrlp.vim'
-"Bundle 'mattn/emmet-vim'
-Bundle 'Yggdroot/indentLine'
-"Bundle 'vim-javacompleteex'
-"Bundle 'Mark--Karkat'
-Bundle 'Shougo/neocomplcache.vim'
-"Bundle 'scrooloose/nerdcommenter'
-Bundle 'scrooloose/nerdtree'
-"Bundle 'OmniCppComplete'
-"Bundle 'Lokaltog/vim-powerline'
-"Bundle 'repeat.vim'
-Bundle 'msanders/snipmate.vim'
-"Bundle 'wesleyche/SrcExpl'
-"Bundle 'std_c.zip'
-"Bundle 'tpope/vim-surround'
-"Bundle 'scrooloose/syntastic'
-Bundle 'majutsushi/tagbar'
-Bundle 'taglist.vim'
-Bundle 'TxtBrowser'
-"Bundle 'ZoomWin'
-"Bundle 'verilog_systemverilog_fix'
 
 
 
@@ -250,25 +250,9 @@ Bundle 'TxtBrowser'
 " =============================================================================
 "                          << 以下为常用插件配置 >>
 " =============================================================================
-
 " -----------------------------------------------------------------------------
-"  < a.vim 插件配置 >
+"  < Align config >
 " -----------------------------------------------------------------------------
-" 用于切换C/C++头文件
-" :A     ---切换头文件并独占整个窗口
-" :AV    ---切换头文件并垂直分割窗口
-" :AS    ---切换头文件并水平分割窗口
-
-" -----------------------------------------------------------------------------
-"  < Align 插件配置 >
-" -----------------------------------------------------------------------------
-" 一个对齐的插件，用来——排版与对齐代码，功能强大，不过用到的机会不多
-
-" -----------------------------------------------------------------------------
-"  < auto-pairs 插件配置 >
-" -----------------------------------------------------------------------------
-" 用于括号与引号自动补全，不过会与函数原型提示插件echofunc冲突
-" 所以我就没有加入echofunc插件
 
 " -----------------------------------------------------------------------------
 "  < BufExplorer 插件配置 >
@@ -279,31 +263,10 @@ Bundle 'TxtBrowser'
 " <Leader>bv 垂直分割窗口显示缓存列表，并在缓存列表窗口中打开选定文件
 
 " -----------------------------------------------------------------------------
-"  < ccvext.vim 插件配置 >
-" -----------------------------------------------------------------------------
-" 用于对指定文件自动生成tags与cscope文件并连接
-" 如果是Windows系统, 则生成的文件在源文件所在盘符根目录的.symbs目录下(如: X:\.symbs\)
-" 如果是Linux系统, 则生成的文件在~/.symbs/目录下
-" 具体用法可参考www.vim.org中此插件的说明
-" <Leader>sy 自动生成tags与cscope文件并连接
-" <Leader>sc 连接已存在的tags与cscope文件
-
-" -----------------------------------------------------------------------------
-"  < cSyntaxAfter 插件配置 >
-" -----------------------------------------------------------------------------
-" 高亮c-like语言括号与运算符等
-"au! BufRead,BufNewFile,BufEnter *.{c,cpp,h,java,javascript,v,sv,tcl,pl,m} call CSyntaxAfter()
-
-" -----------------------------------------------------------------------------
 "  < ctrlp.vim 插件配置 >
 " -----------------------------------------------------------------------------
 " 一个全路径模糊文件，缓冲区，最近最多使用，... 检索插件；详细帮助见 :h ctrlp
 " 常规模式下输入：Ctrl + p 调用插件
-
-" -----------------------------------------------------------------------------
-"  < emmet-vim（前身为Zen coding） 插件配置 >
-" -----------------------------------------------------------------------------
-" HTML/CSS代码快速编写神器，详细帮助见 :h emmet.txt
 
 " -----------------------------------------------------------------------------
 "  < indentLine 插件配置 >
@@ -326,16 +289,6 @@ let g:indentLine_color_term = 239
 
 " 设置 GUI 对齐线颜色，如果不喜欢可以将其注释掉采用默认颜色
  let g:indentLine_color_gui = '#00FFFF'
-
-" -----------------------------------------------------------------------------
-"  < vim-javacompleteex（也就是 javacomplete 增强版）插件配置 >
-" -----------------------------------------------------------------------------
-" java 补全插件
-
-" -----------------------------------------------------------------------------
-"  < Mark--Karkat（也就是 Mark） 插件配置 >
-" -----------------------------------------------------------------------------
-" 给不同的单词高亮，表明不同的变量时很有用，详细帮助见 :h mark.txt
 
 " " -----------------------------------------------------------------------------
 " "  < MiniBufExplorer 插件配置 >
@@ -364,19 +317,6 @@ let g:neocomplcache_enable_at_startup = 1     "vim 启动时启用插件
 " 在弹出补全列表后用 <c-p> 或 <c-n> 进行上下选择效果比较好
 
 " -----------------------------------------------------------------------------
-"  < nerdcommenter 插件配置 >
-" -----------------------------------------------------------------------------
-" 我主要用于C/C++代码注释(其它的也行)
-" 以下为插件默认快捷键，其中的说明是以C/C++为例的，其它语言类似
-" <Leader>ci 以每行一个 /* */ 注释选中行(选中区域所在行)，再输入则取消注释
-" <Leader>cm 以一个 /* */ 注释选中行(选中区域所在行)，再输入则称重复注释
-" <Leader>cc 以每行一个 /* */ 注释选中行或区域，再输入则称重复注释
-" <Leader>cu 取消选中区域(行)的注释，选中区域(行)内至少有一个 /* */
-" <Leader>ca 在/*...*/与//这两种注释方式中切换（其它语言可能不一样了）
-" <Leader>cA 行尾注释
-"let NERDSpaceDelims = 1                     "在左注释符之后，右注释符之前留有空格
-
-" -----------------------------------------------------------------------------
 "  < nerdtree 插件配置 >
 " -----------------------------------------------------------------------------
 " 有目录村结构的文件浏览插件
@@ -396,47 +336,7 @@ nmap <F2> :e .<CR>
 " 所以我就将--c++-kinds=+p参数给去掉了，如果大侠有什么其它解决方法希望不要保留呀
 set completeopt=menu                        "关闭预览窗口
 
-" -----------------------------------------------------------------------------
-"  < powerline 插件配置 >
-" -----------------------------------------------------------------------------
-" 状态栏插件，更好的状态栏效果
-let g:Powerline_stl_path_style = 'full'
-" -----------------------------------------------------------------------------
-"  < repeat 插件配置 >
-" -----------------------------------------------------------------------------
-" 主要用"."命令来重复上次插件使用的命令
 
-" -----------------------------------------------------------------------------
-"  < snipMate 插件配置 >
-" -----------------------------------------------------------------------------
-" 用于各种代码补全，这种补全是一种对代码中的词与代码块的缩写补全，详细用法可以参
-" 考使用说明或网络教程等。不过有时候也会与 supertab 插件在补全时产生冲突，如果大
-" 侠有什么其它解决方法希望不要保留呀
-
-" -----------------------------------------------------------------------------
-"  < SrcExpl 插件配置 >
-" -----------------------------------------------------------------------------
-" 增强源代码浏览，其功能就像Windows中的"Source Insight"
-"nmap <F3> :SrcExplToggle<CR>                "打开/闭浏览窗口
-
-" -----------------------------------------------------------------------------
-"  < std_c 插件配置 >
-" -----------------------------------------------------------------------------
-" 用于增强C语法高亮
-
-" 启用 // 注视风格
-let c_cpp_comments = 0
-
-" -----------------------------------------------------------------------------
-"  < surround 插件配置 >
-" -----------------------------------------------------------------------------
-" 快速给单词/句子两边增加符号（包括html标签），缺点是不能用"."来重复命令
-" 不过 repeat 插件可以解决这个问题，详细帮助见 :h surround.txt
-
-" -----------------------------------------------------------------------------
-"  < Syntastic 插件配置 >
-" -----------------------------------------------------------------------------
-" 用于保存文件时查检语法
 
 " -----------------------------------------------------------------------------
 "  < Tagbar 插件配置 >
@@ -472,10 +372,9 @@ let c_cpp_comments = 0
 au BufRead,BufNewFile *.txt setlocal ft=txt
 
 " -----------------------------------------------------------------------------
-"  < ZoomWin 插件配置 >
+"  < rainbow 插件配置 >
 " -----------------------------------------------------------------------------
-" 用于分割窗口的最大化与还原
-" 常规模式下按快捷键 <c-w>o 在最大化与还原间切换
+let g:rainbow_active = 1 "set to 0 if you want to enable it later via :RainbowToggle
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Sections:
@@ -511,9 +410,6 @@ set autoread
 " like <leader>w saves the current file
 let mapleader = ","
 let g:mapleader = ","
-
-" Fast saving
-nmap <leader>w :w!<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
@@ -601,10 +497,6 @@ map <F12> :if &guioptions =~# 'T' <Bar>
         \set guioptions+=T <Bar>
         \set guioptions+=m <Bar>
     \endif<CR>
-
-
-
-
 
 
 
@@ -752,37 +644,6 @@ autocmd BufWrite *.py :call DeleteTrailingWS()
 autocmd BufWrite *.coffee :call DeleteTrailingWS()
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => vimgrep searching and cope displaying
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" When you press gv you vimgrep after the selected text
-vnoremap <silent> gv :call VisualSelection('gv')<CR>
-
-" Open vimgrep and put the cursor in the right position
-map <leader>g :vimgrep // **/*.<left><left><left><left><left><left><left>
-
-" Vimgreps in the current file
-map <leader><space> :vimgrep // <C-R>%<C-A><right><right><right><right><right><right><right><right><right>
-
-" When you press <leader>r you can search and replace the selected text
-vnoremap <silent> <leader>r :call VisualSelection('replace')<CR>
-
-" Do :help cope if you are unsure what cope is. It's super useful!
-"
-" When you search with vimgrep, display your results in cope by doing:
-"   <leader>cc
-"
-" To go to the next search result do:
-"   <leader>n
-"
-" To go to the previous search results do:
-"   <leader>p
-"
-map <leader>cc :botright cope<cr>
-map <leader>co ggVGy:tabnew<cr>:set syntax=qf<cr>pgg
-map <leader>n :cn<cr>
-map <leader>p :cp<cr>
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Spell checking
@@ -796,18 +657,6 @@ map <leader>sp [s
 map <leader>sa zg
 map <leader>s? z=
 
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Misc
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Remove the Windows ^M - when the encodings gets messed up
-noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
-
-" Quickly open a buffer for scripbble
-map <leader>q :e ~/buffer<cr>
-
-" Toggle paste mode on and off
-map <leader>pp :setlocal paste!<cr>
 
 
 
@@ -870,5 +719,12 @@ function! <SID>BufcloseCloseIt()
      execute("bdelete! ".l:currentBufNum)
    endif
 endfunction
+
+
+""fold""
+set foldmethod=marker
+set foldmarker=BLOCK_BEGIN,BLOCK_END
+nmap <Leader>bb <Esc>aBLOCK_BEGIN<Esc><Leader>cc<Esc>o<Esc>ddiBLOCK_END<Esc><Leader>cc<Esc>O<Esc>0dw<Esc>i
+
 
 
