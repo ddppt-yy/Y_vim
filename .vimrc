@@ -382,7 +382,8 @@ let g:neocomplcache_enable_at_startup = 1     "vim 启动时启用插件
 " 有目录村结构的文件浏览插件
 
 " 常规模式下输入 F2 调用插件
-nmap <F2> :NERDTreeToggle<CR>
+"nmap <F2> :NERDTreeToggle<CR>
+nmap <F2> :e .<CR>
 
 " -----------------------------------------------------------------------------
 "  < omnicppcomplete 插件配置 >
