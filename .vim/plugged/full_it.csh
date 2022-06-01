@@ -1,0 +1,11 @@
+git clone https://github.com/vim-scripts/Align.git
+git clone https://github.com/HonkW93/automatic-verilog.git
+git clone https://github.com/Yggdroot/indentLine.git
+git clone https://github.com/preservim/nerdcommenter.git
+git clone https://github.com/preservim/nerdtree.git
+git clone https://github.com/luochen1990/rainbow.git
+git clone https://github.com/preservim/tagbar.git
+git clone https://github.com/yegappan/taglist.git
+git clone https://github.com/junegunn/vim-plug.git
+git clone https://github.com/vim-scripts/vlog_inst_gen.git
+git clone https://github.com/VundleVim/Vundle.vim.git
