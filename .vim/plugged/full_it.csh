@@ -10,3 +10,4 @@ git clone https://github.com/junegunn/vim-plug.git
 git clone https://github.com/vim-scripts/vlog_inst_gen.git
 git clone https://github.com/VundleVim/Vundle.vim.git
 git clone https://github.com/altercation/vim-colors-solarized.git 
+git clone https://github.com/vim-airline/vim-airline.git 
