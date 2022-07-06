@@ -241,6 +241,7 @@ Plug 'yegappan/taglist.vim'
 Plug 'vim-scripts/vlog_inst_gen'
 Plug 'preservim/nerdcommenter'
 Plug 'luochen1990/rainbow'
+Plug 'vim-airline/vim-airline'
 call plug#end()
 
 
@@ -375,6 +376,16 @@ au BufRead,BufNewFile *.txt setlocal ft=txt
 "  < rainbow 插件配置 >
 " -----------------------------------------------------------------------------
 let g:rainbow_active = 1 "set to 0 if you want to enable it later via :RainbowToggle
+" -----------------------------------------------------------------------------
+"  < airline 插件配置 >
+" -----------------------------------------------------------------------------
+"let g:airline_theme="solarized"
+"let g:airline#extensions#tabline#enabled = 1      "tabline中当前buffer两端的分隔字符
+"let g:airline#extensions#tabline#left_sep = ' '   "tabline中未激活buffer两端的分隔字符
+"let g:airline#extensions#tabline#left_alt_sep = '|'      "tabline中buffer显示编号
+"let g:airline#extensions#tabline#buffer_nr_show = 1 
+"let g:airline#extensions#whitespace#enabled = 0
+"let g:airline#extensions#whitespace#symbol = '!'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Sections:
