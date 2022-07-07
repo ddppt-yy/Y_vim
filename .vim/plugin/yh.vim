@@ -330,10 +330,10 @@ function Always_Process_Build(clk_edge, rst_edge)
           call append(curr_line+5, "end")
        elseif a:clk_edge == "posedge" && a:rst_edge == "negedge"
           call append(curr_line,   "always @(posedge ".clk." or negedge ".rst."_n) begin ")
-          call append(curr_line+1, "  if (!".rst."_n) begin")
-          call append(curr_line+2, "  end")
-          call append(curr_line+3, "  else begin")
-          call append(curr_line+4, "  end")
+          call append(curr_line+1, "    if (".rst."_n == 1'b0) begin")
+          call append(curr_line+2, "    end")
+          call append(curr_line+3, "    else begin")
+          call append(curr_line+4, "    end")
           call append(curr_line+5, "end")
        elseif a:clk_edge == "negedge" && a:rst_edge == "negedge"
           call append(curr_line,   "always @(negedge ".clk." or negedge ".rst."_n) begin ")
@@ -1536,3 +1536,14 @@ func! Run()
         echohl WarningMsg | echo " running finish"
     endif
 endfunc
+
+
+nmap <A-b>  i<Space>begin<CR>end<esc>
+
+
+
+
+
+
+
+
