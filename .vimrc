@@ -242,6 +242,7 @@ Plug 'yegappan/taglist.vim'
 Plug 'preservim/nerdcommenter'
 Plug 'luochen1990/rainbow'
 Plug 'vim-airline/vim-airline'
+Plug 'nachumk/systemverilog.vim'
 call plug#end()
 
 
@@ -309,6 +310,10 @@ noremap <c-j> <c-w>j
 noremap <c-h> <c-w>h
 noremap <c-l> <c-w>l
 
+noremap <c-Up> <c-w>k
+noremap <c-Down> <c-w>j
+noremap <C-Left> <c-w>h
+noremap <C-Right> <c-w>l
 " -----------------------------------------------------------------------------
 "  < neocomplcache 插件配置 >
 " -----------------------------------------------------------------------------
