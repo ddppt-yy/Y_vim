@@ -29,7 +29,6 @@ colorscheme solarized
 
 
 
-
 "share clipboard with windows
 set clipboard+=unnamed
 
@@ -236,13 +235,16 @@ Plug 'vim-scripts/Align'
 Plug 'Yggdroot/indentLine'
 Plug 'Shougo/neocomplcache.vim'
 Plug 'scrooloose/nerdtree'
-Plug 'majutsushi/tagbar'
-Plug 'yegappan/taglist.vim'
+"Plug 'majutsushi/tagbar'
+"Plug 'yegappan/taglist.vim'
 "Plug 'vim-scripts/vlog_inst_gen'
 Plug 'preservim/nerdcommenter'
 Plug 'luochen1990/rainbow'
-Plug 'vim-airline/vim-airline'
-Plug 'nachumk/systemverilog.vim'
+"Plug 'vim-airline/vim-airline'
+Plug 'y/systemverilog.vim'
+Plug 'zhuzhzh/verilog_emacsauto.vim', {'for': ['verilog', 'systemverilog'] }
+"Plug 'vhda/verilog_systemverilog.vim'
+"Plug 'WeiChungWu/vim-SystemVerilog'
 call plug#end()
 
 
@@ -319,9 +321,16 @@ noremap <C-Right> <c-w>l
 " -----------------------------------------------------------------------------
 " 关键字补全、文件路径补全、tag补全等等，各种，非常好用，速度超快。
 let g:neocomplcache_enable_at_startup = 1     "vim 启动时启用插件
-" let g:neocomplcache_disable_auto_complete = 1 "不自动弹出补全列表
+let g:neocomplete#enable_smart_case = 1
+let g:neocomplcache_disable_auto_complete = 1 "不自动弹出补全列表
+let g:neocomplcache_min_syntax_length = 3 
 " 在弹出补全列表后用 <c-p> 或 <c-n> 进行上下选择效果比较好
-
+if g:islinux
+    let g:neocomplcache_dictionary_filetype_lists = {
+        \ 'default' : '',
+        \ 'sv' : '~/.vim/plugged/systemverilog.vim/syntax/systemverilog.dict'
+        \ }
+endif
 " -----------------------------------------------------------------------------
 "  < nerdtree 插件配置 >
 " -----------------------------------------------------------------------------
@@ -350,10 +359,10 @@ set completeopt=menu                        "关闭预览窗口
 " 相对 TagList 能更好的支持面向对象
 
 " 常规模式下输入 tb 调用插件，如果有打开 TagList 窗口则先将其关闭
-"nmap tb :TlistClose<CR>:TagbarToggle<CR>
-"
-"let g:tagbar_width=30                       "设置窗口宽度
-""let g:tagbar_left=1                         "在左侧窗口中显示
+nmap tb :TlistClose<CR>:TagbarToggle<CR>
+
+let g:tagbar_width=30                       "设置窗口宽度
+"let g:tagbar_left=1                         "在左侧窗口中显示
 
 " -----------------------------------------------------------------------------
 "  < TagList 插件配置 >
@@ -361,15 +370,15 @@ set completeopt=menu                        "关闭预览窗口
 " 高效地浏览源码, 其功能就像vc中的workpace
 " 那里面列出了当前文件中的所有宏,全局变量, 函数名等
 
-"" 常规模式下输入 tl 调用插件，如果有打开 Tagbar 窗口则先将其关闭
-"nmap tl :TagbarClose<CR>:Tlist<CR>
-""
-"let Tlist_Show_One_File=1                   "只显示当前文件的tags
-""" let Tlist_Enable_Fold_Column=0              "使taglist插件不显示左边的折叠行
-"let Tlist_Exit_OnlyWindow=1                 "如果Taglist窗口是最后一个窗口则退出Vim
-"let Tlist_File_Fold_Auto_Close=1            "自动折叠
-"let Tlist_WinWidth=30                       "设置窗口宽度
-"let Tlist_Use_Right_Window=1                "在右侧窗口中显示
+" 常规模式下输入 tl 调用插件，如果有打开 Tagbar 窗口则先将其关闭
+nmap tl :TagbarClose<CR>:Tlist<CR>
+"
+let Tlist_Show_One_File=1                   "只显示当前文件的tags
+"" let Tlist_Enable_Fold_Column=0              "使taglist插件不显示左边的折叠行
+let Tlist_Exit_OnlyWindow=1                 "如果Taglist窗口是最后一个窗口则退出Vim
+let Tlist_File_Fold_Auto_Close=1            "自动折叠
+let Tlist_WinWidth=30                       "设置窗口宽度
+let Tlist_Use_Right_Window=1                "在右侧窗口中显示
 
 " -----------------------------------------------------------------------------
 "  < txtbrowser 插件配置 >
@@ -391,6 +400,13 @@ let g:rainbow_active = 1 "set to 0 if you want to enable it later via :RainbowTo
 "let g:airline#extensions#tabline#buffer_nr_show = 1 
 "let g:airline#extensions#whitespace#enabled = 0
 "let g:airline#extensions#whitespace#symbol = '!'
+
+
+" -----------------------------------------------------------------------------
+"  < systemverilog.vim 插件配置 >
+" -----------------------------------------------------------------------------
+"Enable matchit
+runtime macros/matchit.vim
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Sections:

@@ -12,3 +12,7 @@ git clone https://github.com/VundleVim/Vundle.vim.git
 git clone https://github.com/altercation/vim-colors-solarized.git 
 git clone https://github.com/vim-airline/vim-airline.git 
 git clone https://github.com/nachumk/systemverilog.vim.git
+git clone https://github.com/zhuzhzh/verilog_emacsauto.vim.git
+git clone https://github.com/veripool/verilog-mode.git
+git clone git@github.com:vhda/verilog_systemverilog.vim.git
+git clone https://github.com/WeiChungWu/vim-SystemVerilog.git

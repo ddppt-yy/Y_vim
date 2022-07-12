@@ -86,7 +86,7 @@ hi  Vlog_Inst_Gen_Msg_0     gui=bold        guifg=#1E56DB       "lan
 hi  Vlog_Inst_Gen_Msg_1     gui=NONE        guifg=#DB26D2       "fen
 "hi  Vlog_Inst_Gen_Msg_1     gui=NONE        guifg=#10E054       "lv
 "golobal variables
-let g:vlog_inst_gen_mode = 0            "default working mode, modify
+let g:vlog_inst_gen_mode = 2            "default working mode, modify
                                         "default working mode here;
 let g:check_port_declaration = 0
 let g:is_copy_inst_to_doublequotation = 1 "copy instance to clickboard,
