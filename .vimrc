@@ -321,14 +321,16 @@ noremap <C-Right> <c-w>l
 " -----------------------------------------------------------------------------
 " 关键字补全、文件路径补全、tag补全等等，各种，非常好用，速度超快。
 let g:neocomplcache_enable_at_startup = 1     "vim 启动时启用插件
-let g:neocomplete#enable_smart_case = 1
-let g:neocomplcache_disable_auto_complete = 1 "不自动弹出补全列表
-let g:neocomplcache_min_syntax_length = 3 
 " 在弹出补全列表后用 <c-p> 或 <c-n> 进行上下选择效果比较好
 if g:islinux
     let g:neocomplcache_dictionary_filetype_lists = {
         \ 'default' : '',
-        \ 'sv' : '~/.vim/plugged/systemverilog.vim/syntax/systemverilog.dict'
+        \ 'systemverilog' : '~/.vim/plugged/systemverilog.vim/syntax/systemverilog.dict'
+        \ }
+else
+    let g:neocomplcache_dictionary_filetype_lists = {
+        \ 'default' : '',
+        \ 'systemverilog' : $VIM.'/vimfiles/plugged/systemverilog.vim/syntax/systemverilog.dict'
         \ }
 endif
 " -----------------------------------------------------------------------------
@@ -339,19 +341,6 @@ endif
 " 常规模式下输入 F2 调用插件
 "nmap <F2> :NERDTreeToggle<CR>
 nmap <F2> :e .<CR>
-
-" -----------------------------------------------------------------------------
-"  < omnicppcomplete 插件配置 >
-" -----------------------------------------------------------------------------
-" 用于C/C++代码补全，这种补全主要针对命名空间、类、结构、共同体等进行补全，详细
-" 说明可以参考帮助或网络教程等
-" 使用前先执行如下 ctags 命令（本配置中可以直接使用 ccvext 插件来执行以下命令）
-" ctags -R --c++-kinds=+p --fields=+iaS --extra=+q
-" 我使用上面的参数生成标签后，对函数使用跳转时会出现多个选择
-" 所以我就将--c++-kinds=+p参数给去掉了，如果大侠有什么其它解决方法希望不要保留呀
-set completeopt=menu                        "关闭预览窗口
-
-
 
 " -----------------------------------------------------------------------------
 "  < Tagbar 插件配置 >
@@ -381,15 +370,37 @@ let Tlist_WinWidth=30                       "设置窗口宽度
 let Tlist_Use_Right_Window=1                "在右侧窗口中显示
 
 " -----------------------------------------------------------------------------
-"  < txtbrowser 插件配置 >
-" -----------------------------------------------------------------------------
-" 用于文本文件生成标签与与语法高亮（调用TagList插件生成标签，如果可以）
-au BufRead,BufNewFile *.txt setlocal ft=txt
-
-" -----------------------------------------------------------------------------
 "  < rainbow 插件配置 >
 " -----------------------------------------------------------------------------
 let g:rainbow_active = 1 "set to 0 if you want to enable it later via :RainbowToggle
+let g:rainbow_conf = {
+\	'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
+\	'ctermfgs': ['lightblue', 'lightyellow', 'lightcyan', 'lightmagenta'],
+\	'operators': '_,_',
+\	'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
+\	'separately': {
+\		'*': {},
+\		'systemverilog': {
+\			'parentheses': ['start=#\(^\|\s\)begin# end=#\(^\|\s\)end#'],
+\       },
+\		'verilog': {
+\			'parentheses': ['start=#\(^\|\s\)begin# end=#\(^\|\s\)end#'],
+\       },
+\		'tex': {
+\			'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/'],
+\		},
+\		'lisp': {
+\			'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick', 'darkorchid3'],
+\		},
+\		'vim': {
+\			'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/', 'start=/{/ end=/}/ fold', 'start=/(/ end=/)/ containedin=vimFuncBody', 'start=/\[/ end=/\]/ containedin=vimFuncBody', 'start=/{/ end=/}/ fold containedin=vimFuncBody'],
+\		},
+\		'html': {
+\			'parentheses': ['start=/\v\<((area|base|br|col|embed|hr|img|input|keygen|link|menuitem|meta|param|source|track|wbr)[ >])@!\z([-_:a-zA-Z0-9]+)(\s+[-_:a-zA-Z0-9]+(\=("[^"]*"|'."'".'[^'."'".']*'."'".'|[^ '."'".'"><=`]*))?)*\>/ end=#</\z1># fold'],
+\		},
+\		'css': 0,
+\	}
+\}
 " -----------------------------------------------------------------------------
 "  < airline 插件配置 >
 " -----------------------------------------------------------------------------

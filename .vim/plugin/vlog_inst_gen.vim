@@ -94,6 +94,27 @@ let g:is_copy_inst_to_doublequotation = 1 "copy instance to clickboard,
                                         "paste..
 
 
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"   Subfunction     : Flatten_List                   
+"   Input           : a list
+"   Output          : a list    
+"   Return value    : none
+"   Description     : Flatten given list.
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+fun! <SID>Flatten_List(list)
+    let val = []
+    for elem in a:list
+        if type(elem) == type([])
+            call extend(val, <SID>Flatten_List(elem))
+        else
+            call add(val, elem)
+        endif
+        unlet elem
+    endfor
+    return val
+endfunction
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   Subfunction     : Clear_Parameter_List
 "   Input           : a list
@@ -249,7 +270,7 @@ fun! <SID>Line_Pre_Process(line_content)
     "del unused keyword: reg wire
     let lc = substitute(lc, '\(\<reg\>\|\<wire\>\)', '', 'g')
     "del vector identifier (eg: [1:0])
-    let lc = substitute(lc, '\[.\{-}\]', '', 'g')
+    "let lc = substitute(lc, '\[.\{-}\]', '', 'g') "TODO
     "del attributes
     let lc = substitute(lc, '(\*.\{-}\*)', '', 'g')
     return lc
@@ -317,6 +338,7 @@ fun! <SID>Analysis_Module_Head(module_num, module_merged_list, module_name, para
     "begin analysis
     let i = 0
     while i < a:module_num
+        let wid = '1'
         let module_head = a:module_merged_list[i]
         "***********************************************
         "step 1: search module identifier
@@ -398,6 +420,7 @@ fun! <SID>Analysis_Module_Head(module_num, module_merged_list, module_name, para
         let po_list = []
         let pio_list = []
         while 1
+            "let wid = '1'
             if module_head =~ '^);'         "end of analysis
                 break
             elseif module_head =~ '^,'      "del ,
@@ -412,18 +435,53 @@ fun! <SID>Analysis_Module_Head(module_num, module_merged_list, module_name, para
                     let p_dir = 3
                 endif
                 let module_head = substitute(module_head, '^\(\<input\>\|\<output\>\|\<inout\>\)\s*', '', '')
+                "TODO
+                if module_head =~ '\[.\{-}\]' "find port width
+                    let wid = matchstr(module_head,'^\[.\{-}\]')
+                    let module_head = substitute(module_head, '^\[.\{-}\]', '', '') "TODO
+                endif
+                continue
+            elseif module_head =~ '^\[.\{-}\]' "find port width
+                "TODO
+                if module_head =~ '^\[.\{-}\]' "find port width
+                    let wid = matchstr(module_head,'^\[.\{-}\]')
+                    let module_head = substitute(module_head, '^\[.\{-}\]', '', '') "TODO
+                endif
                 continue
             elseif module_head =~ '^[a-zA-Z_][a-zA-Z0-9_]*[,)]'                    "find port
                 let pid = substitute(module_head, '^[a-zA-Z_][a-zA-Z0-9_]*\zs[,)].*$', '', '')
                 let module_head = substitute(module_head, '^[a-zA-Z_][a-zA-Z0-9_]*', '', '')
-                call add(p_list, pid)
+
+                call add(p_list, [pid, wid])
                 if p_dir == 1
-                    call add(pi_list, pid)
+                    call add(pi_list, [pid, wid])
                 elseif p_dir == 2
-                    call add(po_list, pid)
+                    call add(po_list, [pid, wid])
                 elseif p_dir == 3
-                    call add(pio_list, pid)
+                    call add(pio_list, [pid, wid])
                 endif
+                "echo "TODO pid:".pid." wid:".wid." next: ".module_head
+
+                "call add(p_list, [pid, wid])
+                "if p_dir == 1
+                "    call add(pi_list, [pid, wid])
+                "elseif p_dir == 2
+                "    call add(po_list, [pid, wid])
+                "elseif p_dir == 3
+                "    call add(pio_list, [pid, wid])
+                "endif
+                "echo "pid:".pid." wid:".wid
+
+                "call add(p_list, pid)
+                "if p_dir == 1
+                "    call add(pi_list, pid)
+                "elseif p_dir == 2
+                "    call add(po_list, pid)
+                "elseif p_dir == 3
+                "    call add(pio_list, pid)
+                "endif
+
+
                 continue
             else
                 return 6        "Error 6: when analysising port
@@ -732,14 +790,19 @@ fun! <SID>Inst_Part_Format_New(module_num, module_name, para_list, port_list, po
             let list_len = len(a:port_list[i])
             let list_index = 0
             while 1
-                let port = a:port_list[i][list_index]
+                let port = a:port_list[i][list_index][0]
                 let pio = ""
-                if index(a:port_i_list[i],port) != -1
+                let pw  = ""
+                let pilist = <SID>Flatten_List(a:port_i_list[i])
+                let polist = <SID>Flatten_List(a:port_o_list[i])
+                if index(pilist,port) != -1
+                    let pw  = get(pilist,index(pilist,port)+1)
                     let pio = "//i"
-                elseif  index(a:port_o_list[i],port) != -1
+                elseif  index(polist,port) != -1
+                    let pw  = get(polist,index(polist,port)+1)
                     let pio = "//o"
                 else
-                    let pio = "io"
+                    let pio = "//io"
                 endif
 
                 let line_content = "    .".port
@@ -753,11 +816,11 @@ fun! <SID>Inst_Part_Format_New(module_num, module_name, para_list, port_list, po
                     let line_content = line_content." "
                 endw
                 if list_index == list_len-1     "the last item
-                    let line_content = line_content.")".pio."\n"
+                    let line_content = line_content.")".pio." ".pw."\n"
                     let inst = inst.line_content
                     break
                 else
-                    let line_content = line_content."),".pio."\n"
+                    let line_content = line_content."),".pio." ".pw."\n"
                     let inst = inst.line_content
                     let list_index = list_index+1
                     continue
@@ -810,6 +873,7 @@ fun! Vlog_Inst_Gen()
         echohl None
         return 2
     endif
+    "echo "TODO finish step3"
     "step 4:    analysis module head
     let module_name_list = []
     let para_list = []
@@ -826,6 +890,7 @@ fun! Vlog_Inst_Gen()
         echohl None
         return 3
     endif
+    "echo "TODO finish step4"
     "step 5: check port declaration(optional by g:check_port_declaration)
     if g:check_port_declaration == 1
         let port_declare_list = []
@@ -861,10 +926,7 @@ fun! Vlog_Inst_Gen()
             let module_index = module_index+1
         endw
     endif
-                echo   port_list     
-                echo   port_i_list     
-                echo   port_o_list     
-                call input('fuck 3')
+    "echo "TODO finish step5"
     "step 6: get inst part and copy to clipboard
     "let inst_part = <SID>Inst_Part_Format(module_num, module_name_list, para_list, port_list)
     let inst_part = <SID>Inst_Part_Format_New(module_num, module_name_list, para_list, port_list, port_i_list, port_o_list)
@@ -873,9 +935,7 @@ fun! Vlog_Inst_Gen()
         let @" = inst_part
     endif
     "step 6: get inst insert location
-    echo port_list[0]
-    echo port_i_list[0]
-    echo port_o_list[0]
+    "echo "TODO start step6"
     if g:vlog_inst_gen_mode == 0
         echohl Vlog_Inst_Gen_Msg_0
         echo "\n"
