@@ -770,5 +770,8 @@ set foldmarker=BLOCK_BEGIN,BLOCK_END,translate_on,translate_off
 set foldmarker=translate_off,translate_on
 nmap <Leader>bb <Esc>aBLOCK_BEGIN<Esc><Leader>cc<Esc>o<Esc>ddiBLOCK_END<Esc><Leader>cc<Esc>O<Esc>0dw<Esc>i
 
-
-
+""Pwdfull""
+command! Pwdfull call <SID>Pwdfull()
+function! <SID>Pwdfull()
+    echo expand('%:p')
+endfunction
