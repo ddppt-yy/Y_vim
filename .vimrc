@@ -22,6 +22,7 @@ let g:solarized_visibility="high"    "default value is normal
 let g:solarized_hitrail=1    "default value is 0
 syntax enable
 set background=dark
+"set background=light
 colorscheme solarized
 " ------------------------------------------------------------------
 
@@ -381,10 +382,10 @@ let g:rainbow_conf = {
 \	'separately': {
 \		'*': {},
 \		'systemverilog': {
-\			'parentheses': ['start=#\(^\|\s\)begin# end=#\(^\|\s\)end#'],
+\			'parentheses': ['start=#\(^\|\s\)begin\(:\|$\|\s\|\/\/\)# end=#\(^\|\s\)end\(:\|$\|\s\|\/\/\)# fold', 'start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
 \       },
 \		'verilog': {
-\			'parentheses': ['start=#\(^\|\s\)begin# end=#\(^\|\s\)end#'],
+\			'parentheses': ['start=#\(^\|\s\)begin\(:\|$\|\s\|\/\/\)# end=#\(^\|\s\)end\(:\|$\|\s\|\/\/\)# fold', 'start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
 \       },
 \		'tex': {
 \			'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/'],
@@ -655,7 +656,8 @@ endfunction
 " Format the status line
 "set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l  
 "set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ [%l,%c,%p%%,%L]   
-set statusline=[%n]CWD=%r%{getcwd()}%h\ [%{&fenc!=''?&fenc:&enc}:%{&ff}]\ %r%{HasPaste()}%F%m%r%h\ %w\ [%b\ 0x%B][%l,%c,%p%%,%L]   
+"set statusline=[%n]CWD=%r%{getcwd()}%h\ [%{&fenc!=''?&fenc:&enc}:%{&ff}]\ %r%{HasPaste()}%F%m%r%h\ %w\ [%b\ 0x%B][%l,%c,%p%%,%L]   
+set statusline=[%n]\ [%{&fenc!=''?&fenc:&enc}:%{&ff}]\ %r%{HasPaste()}%F%m%r%h\ %w\ [%b\ 0x%B][%l,%c,%p%%,%L]   
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -766,8 +768,13 @@ endfunction
 
 ""fold""
 set foldmethod=marker
-set foldmarker=BLOCK_BEGIN,BLOCK_END,translate_on,translate_off
-set foldmarker=translate_off,translate_on
+set foldmarker=BLOCK_BEGIN,BLOCK_END
+"set foldmarker=translate_off,translate_on
+func! Vhdl_mark()
+    set foldmarker=translate_off,translate_on
+endfunc
+autocmd BufRead *.vhd :call Vhdl_mark()
+
 nmap <Leader>bb <Esc>aBLOCK_BEGIN<Esc><Leader>cc<Esc>o<Esc>ddiBLOCK_END<Esc><Leader>cc<Esc>O<Esc>0dw<Esc>i
 
 ""Pwdfull""
