@@ -22,7 +22,6 @@ let g:solarized_visibility="high"    "default value is normal
 let g:solarized_hitrail=1    "default value is 0
 syntax enable
 set background=dark
-"set background=light
 colorscheme solarized
 " ------------------------------------------------------------------
 
@@ -156,7 +155,7 @@ endif
 
 " 启用每行超过80列的字符提示（字体变蓝并加下划线），不启用就注释掉
 "au BufWinEnter * let w:m2=matchadd('Underlined', '\%>' . 80 . 'v.\+', -1)
-
+set colorcolumn=100
 
 set cursorline                              "突出显示当前行
 set cursorcolumn                            "突出显示当前行
@@ -382,10 +381,10 @@ let g:rainbow_conf = {
 \	'separately': {
 \		'*': {},
 \		'systemverilog': {
-\			'parentheses': ['start=#\(^\|\s\)begin\(:\|$\|\s\|\/\/\)# end=#\(^\|\s\)end\(:\|$\|\s\|\/\/\)# fold', 'start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
+\			'parentheses': ['start=#\(^\|\s\)begin# end=#\(^\|\s\)end#'],
 \       },
 \		'verilog': {
-\			'parentheses': ['start=#\(^\|\s\)begin\(:\|$\|\s\|\/\/\)# end=#\(^\|\s\)end\(:\|$\|\s\|\/\/\)# fold', 'start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
+\			'parentheses': ['start=#\(^\|\s\)begin# end=#\(^\|\s\)end#'],
 \       },
 \		'tex': {
 \			'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/'],
@@ -459,7 +458,7 @@ let g:mapleader = ","
 " => VIM user interface
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Set 7 lines to the cursor - when moving vertically using j/k
-set so=7
+set so=7 " scrolloff
 
 " Turn on the WiLd menu
 set wildmenu
@@ -656,8 +655,7 @@ endfunction
 " Format the status line
 "set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l  
 "set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ [%l,%c,%p%%,%L]   
-"set statusline=[%n]CWD=%r%{getcwd()}%h\ [%{&fenc!=''?&fenc:&enc}:%{&ff}]\ %r%{HasPaste()}%F%m%r%h\ %w\ [%b\ 0x%B][%l,%c,%p%%,%L]   
-set statusline=[%n]\ [%{&fenc!=''?&fenc:&enc}:%{&ff}]\ %r%{HasPaste()}%F%m%r%h\ %w\ [%b\ 0x%B][%l,%c,%p%%,%L]   
+set statusline=[%n]CWD=%r%{getcwd()}%h\ [%{&fenc!=''?&fenc:&enc}:%{&ff}]\ %r%{HasPaste()}%F%m%r%h\ %w\ [%b\ 0x%B][%l,%c,%p%%,%L]   
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -768,13 +766,8 @@ endfunction
 
 ""fold""
 set foldmethod=marker
-set foldmarker=BLOCK_BEGIN,BLOCK_END
-"set foldmarker=translate_off,translate_on
-func! Vhdl_mark()
-    set foldmarker=translate_off,translate_on
-endfunc
-autocmd BufRead *.vhd :call Vhdl_mark()
-
+set foldmarker=BLOCK_BEGIN,BLOCK_END,translate_on,translate_off
+set foldmarker=translate_off,translate_on
 nmap <Leader>bb <Esc>aBLOCK_BEGIN<Esc><Leader>cc<Esc>o<Esc>ddiBLOCK_END<Esc><Leader>cc<Esc>O<Esc>0dw<Esc>i
 
 ""Pwdfull""
