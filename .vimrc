@@ -655,7 +655,38 @@ endfunction
 " Format the status line
 "set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l  
 "set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ [%l,%c,%p%%,%L]   
-set statusline=[%n]CWD=%r%{getcwd()}%h\ [%{&fenc!=''?&fenc:&enc}:%{&ff}]\ %r%{HasPaste()}%F%m%r%h\ %w\ [%b\ 0x%B][%l,%c,%p%%,%L]   
+"set statusline=[%n]CWD=%r%{getcwd()}%h\ [%{&fenc!=''?&fenc:&enc}:%{&ff}]\ %r%{HasPaste()}%F%m%r%h\ %w\ [%b\ 0x%B][%l,%c,%p%%,%L]   
+function! GitBranch()
+    return system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'")
+endfunction
+
+function! StatuslineGit()
+    let l:branchname = GitBranch()
+    return strlen(l:branchname) > 0?'['.l:branchname.']':''
+endfunction 
+
+
+"set statusline=%{StatuslineGit()}[%n]CWD=%r%{getcwd()}%h\ [%{&fenc!=''?&fenc:&enc}:%{&ff}]\ %r%{HasPaste()}%F%m%r%h\ %w\ [%b\ 0x%B][%l,%c,%p%%,%L]%y
+
+set statusline=
+set statusline+=%7*%{StatuslineGit()}
+set statusline+=%2*[%n]
+set statusline+=CWD=%r%{getcwd()}%h\ 
+set statusline+=[%{&fenc!=''?&fenc:&enc}:%{&ff}]\ 
+set statusline+=%r%{HasPaste()}%F%m%r%h\ %w\ 
+set statusline+=%=[%b\ 0x%B]
+set statusline+=[%l,%c,%p%%,%L]
+set statusline+=%y
+
+
+
+
+
+
+
+
+
+
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
