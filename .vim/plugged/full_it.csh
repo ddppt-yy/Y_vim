@@ -16,3 +16,4 @@ git clone https://github.com/zhuzhzh/verilog_emacsauto.vim.git
 git clone https://github.com/veripool/verilog-mode.git
 git clone git@github.com:vhda/verilog_systemverilog.vim.git
 git clone https://github.com/WeiChungWu/vim-SystemVerilog.git
+git clone git@github.com:airblade/vim-gitgutter.git

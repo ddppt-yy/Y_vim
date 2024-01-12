@@ -245,6 +245,7 @@ Plug 'y/systemverilog.vim'
 Plug 'zhuzhzh/verilog_emacsauto.vim', {'for': ['verilog', 'systemverilog'] }
 "Plug 'vhda/verilog_systemverilog.vim'
 "Plug 'WeiChungWu/vim-SystemVerilog'
+Plug 'airblade/vim-gitgutter'
 call plug#end()
 
 
@@ -341,7 +342,7 @@ endif
 " 常规模式下输入 F2 调用插件
 "nmap <F2> :NERDTreeToggle<CR>
 nmap <F2> :e .<CR>
-
+let NERDTreeShowHidden=1
 " -----------------------------------------------------------------------------
 "  < Tagbar 插件配置 >
 " -----------------------------------------------------------------------------
