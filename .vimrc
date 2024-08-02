@@ -658,7 +658,11 @@ endfunction
 "set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ [%l,%c,%p%%,%L]   
 "set statusline=[%n]CWD=%r%{getcwd()}%h\ [%{&fenc!=''?&fenc:&enc}:%{&ff}]\ %r%{HasPaste()}%F%m%r%h\ %w\ [%b\ 0x%B][%l,%c,%p%%,%L]   
 function! GitBranch()
-    return system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'")
+    if (g:iswindows) == 0
+        return system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'")
+    else
+        return 0
+    endif
 endfunction
 
 function! StatuslineGit()
@@ -803,9 +807,14 @@ set foldmarker=translate_off,translate_on
 nmap <Leader>bb <Esc>aBLOCK_BEGIN<Esc><Leader>cc<Esc>o<Esc>ddiBLOCK_END<Esc><Leader>cc<Esc>O<Esc>0dw<Esc>i
 "comment""
 """ https://superuser.com/questions/1571587/is-it-possible-to-map-control-forward-slash-with-vim 
-nmap <C-_> <Leader>c<Space>   
+" https://github.com/preservim/nerdcommenter/issues/484
+nnoremap <silent> <C-_> :<C-u>call nerdcommenter#Comment(0, "toggle")<CR>
 
-""""wrap https://stackoverflow.com/questions/248102/is-there-any-command-to-toggle-enable-auto-text-wrapping 
+vnoremap <silent> <C-_> : call nerdcommenter#Comment("x", "toggle")<CR>
+
+
+
+"""wrap https://stackoverflow.com/questions/248102/is-there-any-command-to-toggle-enable-auto-text-wrapping 
 function ToggleWrap()
  if (&wrap == 1)
    set nowrap
