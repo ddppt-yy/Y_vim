@@ -805,7 +805,7 @@ nmap <Leader>bb <Esc>aBLOCK_BEGIN<Esc><Leader>cc<Esc>o<Esc>ddiBLOCK_END<Esc><Lea
 """ https://superuser.com/questions/1571587/is-it-possible-to-map-control-forward-slash-with-vim 
 nmap <C-_> <Leader>c<Space>   
 
-""""wrap
+""""wrap https://stackoverflow.com/questions/248102/is-there-any-command-to-toggle-enable-auto-text-wrapping 
 function ToggleWrap()
  if (&wrap == 1)
    set nowrap
