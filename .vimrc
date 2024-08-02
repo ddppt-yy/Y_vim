@@ -241,11 +241,11 @@ Plug 'scrooloose/nerdtree'
 Plug 'preservim/nerdcommenter'
 Plug 'luochen1990/rainbow'
 "Plug 'vim-airline/vim-airline'
-Plug 'y/systemverilog.vim'
-Plug 'zhuzhzh/verilog_emacsauto.vim', {'for': ['verilog', 'systemverilog'] }
+"Plug 'y/systemverilog.vim'
+"Plug 'zhuzhzh/verilog_emacsauto.vim', {'for': ['verilog', 'systemverilog'] }
 "Plug 'vhda/verilog_systemverilog.vim'
 "Plug 'WeiChungWu/vim-SystemVerilog'
-Plug 'airblade/vim-gitgutter'
+"Plug 'airblade/vim-gitgutter'
 call plug#end()
 
 
@@ -801,6 +801,26 @@ set foldmethod=marker
 set foldmarker=BLOCK_BEGIN,BLOCK_END,translate_on,translate_off
 set foldmarker=translate_off,translate_on
 nmap <Leader>bb <Esc>aBLOCK_BEGIN<Esc><Leader>cc<Esc>o<Esc>ddiBLOCK_END<Esc><Leader>cc<Esc>O<Esc>0dw<Esc>i
+"comment""
+""" https://superuser.com/questions/1571587/is-it-possible-to-map-control-forward-slash-with-vim 
+nmap <C-_> <Leader>c<Space>   
+
+""""wrap
+function ToggleWrap()
+ if (&wrap == 1)
+   set nowrap
+ else
+   set wrap
+ endif
+endfunction
+
+map <A-z> :call ToggleWrap()<CR>
+map! <A-z> ^[:call ToggleWrap()<CR>
+
+
+
+
+
 
 ""Pwdfull""
 command! Pwdfull call <SID>Pwdfull()
