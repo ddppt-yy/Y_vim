@@ -1540,10 +1540,23 @@ endfunc
 
 nmap <A-b>  i<Space>begin<CR>end<esc>
 
+command! Gen call GenerateVerilogTemplate()
 
-
-
-
+function! GenerateVerilogTemplate()
+    let l:template = [
+        \ 'genvar g_i;',
+        \ 'generate',
+        \ '    for (g_i=0; g_i<=xx ; g_i=g_i+1) begin : GEN_',
+        \ '        ',
+        \ '    end',
+        \ 'endgenerate'
+        \ ]
+    let l:line = line('.')
+    let l:col = col('.')
+    call setline(l:line, l:template)
+    call cursor(l:line + 1, 12)
+    normal! ci<
+endfunction
 
 
 
